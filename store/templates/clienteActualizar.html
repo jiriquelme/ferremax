@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="dashboard-content px-3 pt-4">
+    <h2 class="fs-5">Editar Usuario: {{cliente.Nombre}} {{cliente.Apellido}} </h2> 
+    <div id="error">
+        <h9 style="color: #df534b;"> {{error}} </h9>
+    </div>     
+    <div style="display: table-caption;">
+        <form id="formulario"  method="POST">
+            {% csrf_token %}
+            {{form.as_p}} 
+            <button class="btn btn-sm" style="background: #4E73DF;">
+                <i class="fas fa-pencil-alt" style="color: white;"></i>
+                <span style="color: white;"> Actualizar Usuario </span>
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

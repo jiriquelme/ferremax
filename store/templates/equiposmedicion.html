@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<head>
+    <title>Equipos de Medición</title>
+</head>
+<style>
+    .tienda-listaproducto{
+        display: flex;
+        margin-top: 5rem;
+    }
+    .tienda-producto{
+        text-align: center;
+        background-color: white;
+        padding: 5px;
+        margin: 10px;
+        border-radius: 10px;
+    }
+    .tienda-producto p{
+        margin-bottom: 0;
+    }
+    .tienda-producto img{
+        height: 200;
+    }
+    .producto-nombre{
+        height: 48px;
+        width: 380px;
+    } 
+    .producto-precios{
+        display: flex; 
+        justify-content: space-between; 
+    }   
+</style>
+
+<div class="dashboard-content px-3 pt-4">
+    <h2 class="fs-5"><strong>Equipos de Medición</strong></h2>
+</div>
+<div class="tienda-listaproducto">
+    {% for i in productos.productos %}
+            <div class="tienda-producto">
+                <form action="{% url 'agregar_al_carrito' i.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="producto-marca" style="display: flex; justify-content: space-between;">
+                        <strong><p id="item_marca_{{ forloop.counter }}_label">  {{ i.marca }}</p></strong>
+                        <strong><p id="item_id_{{ forloop.counter }}_label">ID: {{ i.id }}  </p></strong>
+                    </div>
+                    <div class="producto-imagen"><img src="/static/img/placeholder.gif" alt=""></div>
+                    <div class="producto-nombre">
+                        <p id="item_{{ forloop.counter }}_label">{{ i.nombreProducto }}</p>
+                    </div>
+                    <div class="producto-precios">
+                        <strong>${{ i.valorCLP_string }}</strong>
+                        <strong>{{ i.valorUSD_string }}</strong>
+                    </div>
+                    <div class="producto-carro">
+                        <button id="item_{{ forloop.counter }}_btnCompra" type="submit">Añadir al carro</button>
+                        <p>{{ i.stockDisponible }} Unidades</p>
+                    </div>
+                </form>
+            </div>
+    {% endfor %}
+</div>
+{% endblock %}

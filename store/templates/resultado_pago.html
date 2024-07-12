@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resultado del Pago</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+    <link rel="stylesheet" href="{% static 'img/' %}">
+</head>
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Poppins', sans-serif;
+    }
+    .resultado-pago{
+        background-color: #ffffff;
+        border-radius: 8px; 
+        width: 400px; 
+        height: 250px;
+        text-align: center;
+    }
+    button{
+        padding: 3px;
+        background-color: #0861F2;
+        color: white;
+        border-radius: 5px;
+        font-family: 'Poppins', sans-serif;
+        border-color: #0861F2;
+    }
+    .imagen-pago{
+        width: 50px;
+        height: auto; 
+    }  
+</style>
+<body style="background-color: #eeeeee; ">
+    <div class="resultado-pago">
+        {% if response.status == 'AUTHORIZED' %}
+        <div style="margin-top: 1rem;">
+            <img src="/static/img/comprobado.png" alt="" class="imagen-pago">
+        </div>
+        <h2 style="color: #39B449;">Pago exitoso</h2>
+        <p>Orden: {{ response.buy_order }}</p>
+        {% else %}
+        <div style="margin-top: 1rem;">
+            <img src="/static/img/cancelar.png" alt="" class="imagen-pago">
+        </div>
+        <h2 style="color: red;">Pago fallido</h2>
+        <p>Estado: {{ response.status }}</p>
+        {% endif %}    
+        <div style="margin-top: 2rem;">
+            <a href="/"><button> Volver a la Tienda </button></a> 
+        </div>    
+    </div>
+</body>
+</html>

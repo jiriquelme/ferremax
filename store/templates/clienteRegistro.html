@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="dashboard-content px-3 pt-4">
+    <h2 class="fs-5">Registro de Cliente</h2>
+    <div id="error">
+        <h9 style="color: #df534b;"> {{error}} </h9>
+        <h9 style="color: green;"> {{mensajeExito}} </h9>
+    </div>
+    <div style="display: table-caption;">
+        <form id="formulario" action="" method="POST">
+            {% csrf_token %}
+            {{form.as_p}} 
+            <button class="btn btn-sm" style="background: #4E73DF;">
+                <i class="fas fa-user" style="color: white;"></i>
+                <span style="color: white;"> Registrar Usuario </span>
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

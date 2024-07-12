@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<head>
+    <title>Ferremax | Inicio </title>
+</head>
+<style>
+    .formulario-suscripcion{
+        width: 85%;
+        height: 240px;
+        background-color: white; 
+        display: flex;
+        flex-direction: column;
+        padding: 2rem 0px 0px 1rem;
+        margin-top: 4rem;
+    } 
+
+</style>
+
+<div class="dashboard-content px-3 pt-4">
+    <div class="dashboard-content px-3 pt-4">
+        <h2 class="fs-5"><strong>Inicio</strong></h2>
+    </div>
+    <p>Este es la página principal del sitio web de "FERREMAX".</p>
+    <div id="formulario" class="formulario-suscripcion">
+        <h1>Suscribete!</h1>
+        <p>Suscribete ingresando tu correo para que puedas recibir de forma automatica todo nuestro catálogo de ofertas semanales</p>
+        <form action="" method="POST" style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: space-between;" novalidate>
+            {% csrf_token %}
+            <div style="display: flex; align-items: center;">
+                <div > 
+                    {{form.email.label}} 
+                    {{form.email}} 
+                </div>
+                <div style="margin-left: 1rem;"> 
+                    <button id="recibir_ofertas"> Recibir Ofertas </button> 
+                </div> 
+            </div>
+            {% if form.errors %}
+            <div id="id_error1" class="alert alert-danger" style="text-align: center; margin-right: 2rem;">
+                {{ form.email.errors }}
+            </div>
+            {% endif %}  
+        </form>
+        <div>
+            <p id="id_error2" style="color: #df534b;">{{mensaje_error}}</p>
+            <p id="id_estado" style="color: green;">{{mensaje}}</p>
+        </div>   
+    </div> 
+</div>
+{% endblock %}

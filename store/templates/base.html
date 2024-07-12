@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">   
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'img/' %}">
+</head>
+<body>
+
+
+    <div class="main-container d-flex">
+        <div class="sidebar" id="side_nav">
+            <div class="header-box px-2 pt-3 pb-4 d-flex justify-content-between">
+                <a href="/">
+                    <h1 class="fs-4">
+                        <span class="bg-white rounded shadow px-2 me-2" style="color: var(--color-menu);">FX</span> 
+                        <span class="text-white">FERREMAX</span>
+                    </h1>
+                </a>
+                <button class="btn d-md-none d-block close-btn px-1 py-0 text-white">
+                    <i
+                        class="fal fa-stream">
+                    </i>
+                </button>
+            </div>
+
+            <ul class="list-unstyled px-2">
+                <li class="" style="font-size: 15px;"><a id="herramientasManuales" href="/herramientas-manuales" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-hammer" style="color: #ffffff;"></i> Herramientas Manuales</a></li>
+                <li class=""><a id="materialesBasicos" href="/materiales-basicos" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-fill" style="color: #ffffff;"></i> Materiales Básicos</a></li>
+                <li class=""><a id="equiposDeSeguridad" href="/equipos-de-seguridad" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-hard-hat" style="color: #ffffff;"></i> Equipos de Seguridad</a></li>
+                <li class=""><a id="fijaciones" href="/fijaciones" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-screwdriver" style="color: #ffffff;"></i></i> Fijaciones</a></li>      
+                <li class=""><a id="equiposDeMedicion" href="/equipos-de-medicion" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-ruler-combined" style="color: #ffffff;"></i> Equipos de Medición</a></li>            
+            </ul>
+            {% if user.is_authenticated %}
+            <hr class="h-color mx-2">
+            <ul class="list-unstyled px-2">
+                <li class=""><a href="/settings" class="text-decoration-none px-3 py-2 d-block"><i class="fal fa-bars"></i>
+                Configuración</a></li>
+                <li class=""><a href="/alerts" class="text-decoration-none px-3 py-2 d-block"><i class="fal fa-bell"></i>
+                Notificaciónes</a></li>
+            </ul>
+            {% endif %}
+        </div>
+        <div class="content">
+            <nav class="navbar navbar-expand-md navbar-light bg-light">
+                <div class="container-fluid">
+                    <div class="d-flex justify-content-between d-md-none d-block">
+                        <button class="btn px-1 py-0 open-btn me-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#side_nav" aria-controls="side_nav"
+                        aria-expanded="true" >
+                            <i class="fal fa-bars"></i>
+                        </button>
+                        <a href="/">
+                            <h1 class="fs-4">
+                                <span style="background: var(--color-menu); color: white;" class="bg-solid rounded shadow px-2 me-2">FX</span>
+                            </h1>
+                        </a>                    
+                    </div>
+                    <button class="navbar-toggler p-0 border-0" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fal fa-bars"></i>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0" style="justify-content:space-around;">
+                            {% if not user.is_authenticated %}
+                            <li class="nav-item">
+                                <a id="registro-usuario" class="nav-link active" aria-current="page" href="/signup">¿No tienes una cuenta? Regístrese </a>
+                            </li> 
+                            <div class="vertical-line"></div>
+                            {% endif %}
+                            {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a id="username_navbar" class="nav-link active" aria-current="page" href="/"> {{user.get_username}} </a>
+                            </li>                            
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/logout">Cerrar Sesión</a>
+                            </li>
+                            {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/login"> Iniciar Sesión </a>
+                            </li>
+                            {% endif %}
+                            <div class="vertical-line"></div>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/carro">
+                                    <i class="fas fa-shopping-cart" style="color: var(--color-menu);"></i> Mi carro
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </nav>
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+        $(".sidebar ul li").on('click' ,function(){
+            $(".sidebar ul li.active").removeClass('active')
+            $(this).addClass('active')
+        })
+    </script>
+</body>
+</html>

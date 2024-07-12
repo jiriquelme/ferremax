@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="dashboard-content px-3 pt-4">
+    <style>
+        table {
+            text-align: center;
+        }
+        .iconoTabla{
+            border-top-style: hidden;
+            border-bottom-style: hidden;            
+        }
+        .headerTabla{
+            background: #4E73DF;
+            color: white;
+            border-color: darkblue;
+        }
+        tr, th, td {
+            border: 1px solid darkblue;
+        }
+        td, th {
+            margin: 0px 10px;
+            padding: 10px;
+        }
+    </style>
+<form action="listado/eliminacion" method="POST">
+    {% csrf_token %}
+    <div style="display: flex; justify-content: space-between;">
+        <h2 class="fs-5">Listado de Clientes</h2>
+        {% if clienteCantidad > 0 %}
+        <div>
+            <button class="btn btn-sm" style="background: #4E73DF;">
+                <i class="fas fa-trash" style="color: white;"></i>
+                <span style="color: white;"> Borrar Clientes Seleccionados</span>
+            </button>
+        </div>
+    </div>
+    <div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th style="border-left-style: hidden;" class="iconoTabla"> </th>
+                    <th class="headerTabla">RUT</th>
+                    <th class="headerTabla">Nombre Completo</th>
+                    <th class="headerTabla">Direccion</th>
+                    <th class="headerTabla">Teléfono</th>
+                    <th class="headerTabla">Correo</th>
+                    <th style="border-right-style: hidden;" class="iconoTabla"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                <tr>
+                    <td style="border-left-style: hidden;" class="check_box iconoTabla">
+                        <input type="checkbox" name="eliminados" value="{{cliente.RUT}}" id="{{cliente.RUT}}">
+                    </td>
+                    <td>{{cliente.RUT}}</td>
+                    <td>{{cliente.Nombre}} {{cliente.Apellido}}</td>
+                    <td>{{cliente.Direccion}}</td>
+                    <td>{{cliente.Telefono}}</td>
+                    <td>{{cliente.Correo}}</td>
+</form>
+                    <td style="border-right-style: hidden;" class="iconoTabla">                        
+                        <form action="{% url 'clientesActualizado' cliente.RUT %}" method="GET">
+                            {% csrf_token %}
+                            <button class="btn btn-sm" style="background: #4E73DF;">
+                                <i class="fas fa-pencil-alt" style="color: white;"></i>
+                                <span style="color: white;"> Editar </span>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

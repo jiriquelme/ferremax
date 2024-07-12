@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<head>
+    <title>Carro de Compra</title>
+</head>
+<style>
+    .menu-carro,.resumen-compra{
+        background-color: white;
+        margin-top: 25px;
+        margin-left: 50px;
+        margin-right: 50px;
+        border-radius: 8px;
+        margin-bottom: 5rem;
+    }
+    .item-carro{
+        display: flex;
+        flex-direction: row;
+        border-top: 1px solid black;
+        padding: 16px 0px;
+    }
+    .item-carro-imagen{
+        margin-left: 1rem;
+        margin-right: 1rem;
+    } 
+    .item-carro-marca{
+        margin-bottom: 1rem;
+    }
+    .item-carro-informacion-valor{
+        display: flex;
+        width: 100%;
+    }  
+    .item-carro-informacion{
+        width: 60%;
+    }  
+    .item-carro-valor-container{
+        width: 40%;
+        margin-right: 15px;
+        margin-left: 15px;
+        text-align: end;
+    }
+    .item-carro-valor{
+        font-size: 20px;
+        padding-bottom: 1rem;
+    }
+    .item-carro-cantidad{
+        display: flex;
+        align-items: baseline;  
+        justify-content: end;      
+    }   
+    .eliminar-item{
+        background-color: white;
+        border-color: white;
+        font-style: #8c8c8c;
+        margin-left: 1rem;     
+    } 
+    a{
+        text-decoration: none;
+    }
+    .resumen-compra{
+        width: 38%;
+        height: 300px;
+    }
+    .resumen-costo{
+        display: flex;
+        justify-content: space-between;
+        margin: 1rem;
+        border-bottom: 1px solid rgb(234, 234, 234);
+    }
+    table{
+        border-collapse: collapse;
+        width: 100%;      
+    }
+    .tabla-resumen{
+        text-align: center;
+        width: 95%;
+        margin-left: 1rem;
+    } 
+    .tabla-resumen th,tr,td{
+        border: none;
+        border-bottom: 1px solid rgb(234, 234, 234) ;
+    } 
+</style>
+{% if carrito_vacio %}
+<p style="font-size: 16px; font-weight: 600; line-height: 20px; color: rgb(54, 63, 69); margin-top: 20%; margin-left: 40%;"> El carro de compra se encuentra vacío</p>
+{% else %}
+<div style="display: flex;">
+    <div class="menu-carro">
+        <div class="dashboard-content px-3 pt-4" style="padding: 16px; font-size: 24px; font-weight: 600";>
+            <h2 class="fs-5"><strong>Tu Compra</strong></h2>
+        </div>
+        <div>
+            {% for i in carrito_items %}
+            <div class="item-carro">
+                <div class="item-carro-imagen">
+                    <img src="/static/img/placeholder_carro.gif" alt="">
+                    <div class="item-carro-id"><p id="item_carro_id_{{i.producto.id}}">ID: {{i.producto.id}}</p></div>
+                </div>
+                <div class="item-carro-informacion-valor">
+                    <div class="item-carro-informacion">
+                        <div class="item-carro-marca"><strong id="item_carro_marca_{{i.producto.id}}">{{i.producto.marca}}</strong></div>
+                        <div class="item-carro-nombre"><p id="item_carro_nombre_{{i.producto.id}}">{{i.producto.nombreProducto}}</p></div>
+                        <div class="item-carro-codigo"><p id="item_carro_codigo_{{i.producto.id}}">{{i.producto.codigoProducto}}</p></div> 
+                    </div>
+                    <div class="item-carro-valor-container">
+                        <div class="item-carro-valor"><strong>${{i.producto.valorCLP_string}}</strong></div>
+                        <div class="item-carro-valor"><strong>{{i.valorUSD_string}}</strong></div>
+                        <div class="item-carro-cantidad">
+                            <p>{{i.cantidad}} Unidades</p>
+                            <form action="{% url 'eliminar_del_carrito' i.id %}" method="post" style="margin-left: 1rem;">
+                                {% csrf_token %}
+                                <button id="item_carro_btnEliminar_{{i.producto.id}}" type="submit">Eliminar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="resumen-compra">
+        <div class="dashboard-content px-3 pt-4" style="display: flex; padding: 16px; font-size: 24px; font-weight: 600; border-bottom: 1px solid black; margin-left: 1rem; margin-right: 1rem;";>
+            <h2 class="fs-5">
+                <strong>Resumen de Compra</strong>
+            </h2>
+        </div>
+        <div>
+            <table class="tabla-resumen">
+                <tr>
+                    <th>Detalle</th>
+                    <th>Peso Chileno</th>
+                    <th>Dólar Estadounidense</th>
+                </tr>
+                <tr>
+                    <td>Subtotal</td>
+                    <td>${{subtotal_compra_CLP_string}}</td>
+                    <td>{{subtotal_compra_USD_string}}</td>
+                </tr>
+                <tr>
+                    <td>Descuento</td>
+                    <td>{{descuento_CLP_string}}</td>
+                    <td>{{descuento_USD_string}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Total</strong></td>
+                    <td><strong>{{total_compra_CLP_string}}</strong></td>
+                    <td><strong>{{total_compra_USD_string}}</strong></td>
+                </tr>
+            </table>
+        </div>
+        {% if not user.is_authenticated %}
+        <div style="margin-left: 1rem; margin-top: 1rem;color: red">
+            <p>Recuerda que si compras con un usuario registrado tienes un 20% de descuento. </p>
+        </div>
+        {% endif %}
+        <div class="metodos-pago" style="display: flex; justify-content: space-around; margin-left: 1rem; margin-top: 1rem;"> 
+            <form action="{% url 'iniciar_pago' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Pagar con Transbank</button>
+            </form>
+            <button onclick="toggleBankTransferMenu()">Transferencia Bancaria</button>
+        </div>
+    </div>
+    <!-- Menú adicional para los datos de transferencia bancaria -->
+    <div id="bankTransferMenu" style="display:none;">
+        <div style="background-color: white; margin: 25px 50px 5rem 50px; padding: 3rem;">
+            <h2 class="fs-5">
+                <strong>Datos de Transferencia Bancaria</strong>
+            </h2>
+            <p>Banco: Banco Bice</p>
+            <p>Tipo de Cuenta: Cuenta Corriente</p>
+            <p>Nro. de cuenta: 09-01823-9</p>
+            <p>RUT: 76.918.522-4</p>
+            <p>Titular: Ferremax Chile Spa</p>
+            <p>Correo: transferencias@ferremax.cl</p>
+        </div>
+    </div>
+</div>
+<script>
+    function toggleBankTransferMenu() {
+    var menu = document.getElementById('bankTransferMenu');
+    if (menu.style.display === 'none') {
+        menu.style.display = 'block';
+    } else {
+        menu.style.display = 'none';
+    }
+}
+</script>
+{% endif %}
+{% endblock %}
