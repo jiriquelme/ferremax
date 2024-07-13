@@ -30,8 +30,8 @@ Para utilizar Ferremax, asegúrate de tener instalado:
 5. Ejecuta las migraciones: `python manage.py migrate`
 6. Inicia el servidor: `python manage.py runserver`
 
-### Contribuciones
+### Notas
 
-¡Nos encantaría recibir tus contribuciones! Si deseas colaborar en Ferremax, por favor sigue las directrices de contribución en nuestro repositorio.
+Se debe establecer apropiadamente en el archivo settings.py la ruta de la base de datos a utilizar, y una vez establecida, ejecutar las migraciones. Esto creará la base de datos de la misma estructura que el proyecto necesita.
 
 ¡Gracias por usar Ferremax!
